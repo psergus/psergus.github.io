@@ -60,8 +60,17 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 	    scope.$on('execCommand', function(e, cmd) {
 		console.log('execCommand: ');
 		console.log(cmd);
-		scope.getSelection();
-		$document.execCommand(cmd.command, 0, cmd.arg);
+		//scope.getSelection();
+		var sel = $document.selection; //http://stackoverflow.com/questions/11329982/how-refocus-when-insert-image-in-contenteditable-divs-in-ie
+		if (sel) {
+		    var textRange = sel.createRange();
+		    $document.execCommand(cmd.command, 0, cmd.arg);
+		    textRange.collapse(false);
+		    textRange.select();
+		}
+		else {
+		    $document.execCommand(cmd.command, 0, cmd.arg);
+		}
 		//scope.restoreSelection();
 		$document.body.focus();
 		scope.sync();

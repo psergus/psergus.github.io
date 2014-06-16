@@ -3,8 +3,8 @@ body {margin:0; padding:25px; font:12px Verdana,Arial}
 .tinyeditor {border:1px solid #bbb; padding:0 1px 1px; font:12px Verdana,Arial}
 .tinyeditor iframe {border:none; background: white; overflow-x:hidden}
 .tinyeditor-header {height:31px; border-bottom:1px solid #bbb; background:url(../images/header-bg.gif) repeat-x; padding-top:1px}
-.tinyeditor-header select {float:left; margin-top:5px}
-.tinyeditor-font {margin-left:12px}
+.tinyeditor-header select {float:left; /*margin-top:5px*/ }
+.tinyeditor-font {/*margin-left:12px*/}
 .tinyeditor-size {margin:0 3px}
 .tinyeditor-style {margin-right:12px}
 .tinyeditor-divider {float:left; width:1px; height:30px; background:#ccc}
