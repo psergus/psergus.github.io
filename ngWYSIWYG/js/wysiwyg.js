@@ -33,10 +33,51 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 			});
 	    }
 	    
+	    
+	    var getSelectionBoundaryElement = function(win, isStart) {
+		var range, sel, container = null;
+		var doc = win.document;
+		if (doc.selection) {
+		    // IE branch
+		    range = doc.selection.createRange();
+		    range.collapse(isStart);
+		    return range.parentElement();
+		}
+		else if (win.getSelection) {
+		    // Other browsers
+		    sel = win.getSelection();
+		    if (sel.rangeCount > 0) {
+			range = sel.getRangeAt(0);
+			container = range[isStart ? "startContainer" : "endContainer"];
+			
+			// Check if the container is a text node and return its parent if so
+			if (container.nodeType === 3) {
+			    container = container.parentNode;
+			}
+		    }
+		}
+		return container;
+	    }
+	    
 	    //view --> model
 	    $body.bind('blur keyup change paste', function() {
 			scope.$apply(function blurkeyup() {
 			    ctrl.$setViewValue($body.html());
+			    //check the caret position
+			    //http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
+			    var el = getSelectionBoundaryElement($element[0].contentWindow, true);
+			    var computedStyle = $element[0].contentWindow.getComputedStyle(el);
+			    var elementStyle = {
+				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold'),
+				'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
+				'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
+				'color': computedStyle.getPropertyValue("color"),
+				'align': computedStyle.getPropertyValue("text-align"),
+				'sub': (computedStyle.getPropertyValue("vertical-align") == 'sub'),
+				'super': (computedStyle.getPropertyValue("vertical-align") == 'super'),
+				'background': computedStyle.getPropertyValue("background-color")
+			    };
+			    console.log( elementStyle );
 			});
 	    });
 	    
