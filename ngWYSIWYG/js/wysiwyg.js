@@ -59,9 +59,14 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 		return container;
 	    }
 	    
+	    var debounce = null; //we will debounce the event in case of the rapid movement. Overall, we are intereseted in the last cursor/caret position
 	    //view --> model
 	    $body.bind('blur keyup change paste', function() {
-			scope.$apply(function blurkeyup() {
+		//lets debounce it
+		if(debounce) {
+		    $timeout.cancel(debounce);
+		}
+		debounce = $timeout(function blurkeyup() {
 			    ctrl.$setViewValue($body.html());
 			    //check the caret position
 			    //http://stackoverflow.com/questions/14546568/get-parent-element-of-caret-in-iframe-design-mode
@@ -71,14 +76,18 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold'),
 				'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
 				'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
+				'strikethrough': (computedStyle.getPropertyValue("text-decoration") == 'line-through'),
 				'color': computedStyle.getPropertyValue("color"),
 				'align': computedStyle.getPropertyValue("text-align"),
 				'sub': (computedStyle.getPropertyValue("vertical-align") == 'sub'),
 				'super': (computedStyle.getPropertyValue("vertical-align") == 'super'),
 				'background': computedStyle.getPropertyValue("background-color")
 			    };
-			    console.log( elementStyle );
-			});
+			    //dispatch upward the through the scope chain
+			    scope.$emit('cursor-position', elementStyle);
+			    //console.log( elementStyle );
+			},
+		100/*ms*/, true /*invoke apply*/);
 	    });
 	    
 
@@ -299,6 +308,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
     function($compile, $timeout) {
 	var linker = function( scope, $element, attrs, ctrl ) {
 	    scope.editMode = false;
+	    scope.cursorStyle = {}; //current cursor/caret position style
 	    scope.fonts = ['Verdana','Arial', 'Arial Black', 'Arial Narrow', 'Courier New', 'Century Gothic', 'Comic Sans MS', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Webdings','Trebuchet MS'];
 	    scope.$watch('font', function(newValue) {
 		if(newValue) {
@@ -360,6 +370,11 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 			for(var i = 0; i < document.getElementsByClassName('tinyeditor-header').length; i += 1) {
 			    makeUnselectable(document.getElementsByClassName("tinyeditor-header")[i]);
 			}
+	    });
+	    //catch the cursort position style
+	    scope.$on('cursor-position', function(event, data) {
+		//console.log('cursor-position', data);
+		scope.cursorStyle = data;
 	    });
 	}
 	return {
