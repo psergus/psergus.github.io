@@ -11,10 +11,10 @@ body {margin:0; padding:25px; font:12px Verdana,Arial}
 .tinyeditor-style {margin-right:12px}
 .tinyeditor-divider {float:left; width:1px; height:30px; background:#ccc}
 .tinyeditor-control {
-    float:left; 
-    width:34px; 
-    height:30px; 
-    cursor:pointer; 
+    float:left;
+    width:34px;
+    height:30px;
+    cursor:pointer;
     background-image:url(../images/icons.png);
     background-position-x: 0px;
 }
