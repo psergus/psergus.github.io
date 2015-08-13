@@ -147,7 +147,6 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 			var el = getSelectionBoundaryElement($element[0].contentWindow, true);
 			if(el) {
 			    var computedStyle = $element[0].contentWindow.getComputedStyle(el);
-			    console.log(computedStyle.getPropertyValue("font-weight"));
 			    var elementStyle = {
 				'bold': (computedStyle.getPropertyValue("font-weight") == 'bold' || parseInt(computedStyle.getPropertyValue("font-weight")) >= 700),
 				'italic': (computedStyle.getPropertyValue("font-style") == 'italic'),
@@ -472,7 +471,7 @@ angular.module('ngWYSIWYG').directive('wysiwygEdit', ['$compile', '$timeout',
 	    scope.$on('cursor-position', function(event, data) {
 		console.log('cursor-position', data);
 		scope.cursorStyle = data;
-		scope.font = data.font;
+		scope.font = data.font.replace("'", '');
 		scope.fontsize = scope.mapFontSize[data.size]? scope.mapFontSize[data.size] : 0;
 	    });
 	}
