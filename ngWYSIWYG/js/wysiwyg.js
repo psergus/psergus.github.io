@@ -50,7 +50,7 @@ var template = "<div class=\"tinyeditor\">" +
 	"</div>" +
 	"<div class=\"tinyeditor-buttons-group\">" +
 	    "<select class=\"tinyeditor-font\" ng-model=\"font\" ng-options=\"a as a for a in fonts\"><option value=\"\">Font</option></select>" +
-	    "<select class=\"tinyeditor-size\" ng-model=\"fontsize\" ng-options=\"a as a for a in fontsizes\"><option value=\"\">...</option></select>" +
+	    "<select class=\"tinyeditor-size\" ng-model=\"fontsize\" ng-options=\"a as a for a in fontsizes\"><option value=\"\">Size</option></select>" +
 	    "<select class=\"tinyeditor-style\" ng-model=\"textstyle\" ng-options=\"s.key as s.name for s in styles\"><option value=\"\">Style</option></select>" +
 	"</div>" +
 	"<div style=\"clear: both;\"></div>" +
@@ -154,6 +154,7 @@ angular.module('ngWYSIWYG').directive('wframe', ['$compile', '$timeout',
 				'underline': (computedStyle.getPropertyValue("text-decoration") == 'underline'),
 				'strikethrough': (computedStyle.getPropertyValue("text-decoration") == 'line-through'),
 				'font': computedStyle.getPropertyValue("font-family"),
+				'size': computedStyle.getPropertyValue("font-size"),
 				'color': computedStyle.getPropertyValue("color"),
 				'align': computedStyle.getPropertyValue("text-align"),
 				'sub': (computedStyle.getPropertyValue("vertical-align") == 'sub'),
