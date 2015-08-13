@@ -21,7 +21,7 @@
     <script>
 	angular.module('myApp', ['ngWYSIWYG']).
 	controller('demoController', ['$scope', '$log', function($scope, $log) {
-	    $scope.content = '<p><strong>Hello World!</strong></p><img style="width: 30%;" src="http://fossies.org/linux/angular.js/images/logo/AngularJS.exports/AngularJS-large.png">';
+	    $scope.content = '<p><strong>Hello World!</strong></p><img style="width: 30%;" src="images/logo.png">';
 	    $scope.$watch('content', function(newValue) {
 		$log.info(newValue);
 	    });
