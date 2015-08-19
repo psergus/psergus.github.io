@@ -11,7 +11,7 @@
 </head>
 <body ng-controller="demoController" ng-cloak>
     <h2>ngWYSIWYG - Angular real rich text editor.</h2>
-    <wysiwyg-edit content="content"></wysiwyg-edit>
+    <wysiwyg-edit content="content" api="api"></wysiwyg-edit>
 
     <!-- load assets -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
@@ -20,8 +20,25 @@
     <script src="js/wysiwyg.js"></script>
     <script>
 	angular.module('myApp', ['ngWYSIWYG']).
-	controller('demoController', ['$scope', '$log', function($scope, $log) {
+	controller('demoController', ['$scope', '$log', '$q', '$timeout', function($scope, $log, $q, $timeout) {
 	    $scope.content = '<p><strong>Hello World!</strong></p><img style="width: 30%;" src="images/logo.png">';
+	    //describe api
+	    $scope.api = {
+		scope: $scope,
+		insertImage: function() {
+		    var deferred = $q.defer();
+		    $timeout(function() {
+			var val = prompt('Enter image url', 'http://');
+			if(val) {
+			    deferred.resolve('<img src="' + val + '" style="width: 30%;">');
+			}
+			else {
+			    deferred.reject(null);
+			}
+		    }, 1000);
+		    return deferred.promise;
+		}
+	    };
 	    $scope.$watch('content', function(newValue) {
 		$log.info(newValue);
 	    });
