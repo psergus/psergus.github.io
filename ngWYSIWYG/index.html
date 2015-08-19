@@ -28,7 +28,7 @@
 		insertImage: function() {
 		    var deferred = $q.defer();
 		    $timeout(function() {
-			var val = prompt('Enter image url', 'http://');
+			var val = prompt('Enter image url', 'https://upload.wikimedia.org/wikipedia/commons/c/ca/AngularJS_logo.svg');
 			if(val) {
 			    deferred.resolve('<img src="' + val + '" style="width: 30%;">');
 			}
